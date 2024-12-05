@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indra Motor Spares (Pvt) Ltd</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background: #2c3e50;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background: #34495e;
+            padding: 10px 0;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        main {
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background: #2c3e50;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        form {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+        }
+        form input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        form button {
+            padding: 10px;
+            background-color: #34495e;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #2c3e50;
+        }
+        .edit-btn {
+            padding: 5px 10px;
+            background-color: #f39c12;
+            color: white;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+        .edit-btn:hover {
+            background-color: #e67e22;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Indra Motor Spares (Pvt) Ltd</h1>
+        <p>Your Trusted Partner for Auto Spare Parts</p>
+    </header>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#about">About Us</a>
+        <a href="#items">Items</a>
+        <a href="#contact">Contact Us</a>
+    </nav>
+    <main>
+        <section id="about">
+            <h2>About Us</h2>
+            <p>Indra Motor Spares (Pvt) Ltd is a leading provider of high-quality auto spare parts, serving customers with excellence for over two decades.</p>
+        </section>
+        <section id="items">
+            <h2>Our Products</h2>
+            <table id="itemsTable">
+                <thead>
+                    <tr>
+                        <th>Item Code</th>
+                        <th>Part Number</th>
+                        <th>Item Name</th>
+                        <th>Price (USD)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Items data will appear here dynamically -->
+                </tbody>
+            </table>
+            <h3>Add or Edit Item</h3>
+            <form id="itemForm">
+                <input type="text" id="itemCode" placeholder="Item Code" required>
+                <input type="text" id="partNumber" placeholder="Part Number" required>
+                <input type="text" id="itemName" placeholder="Item Name" required>
+                <input type="number" id="price" placeholder="Price (USD)" step="0.01" required>
+                <button type="button" onclick="addOrUpdateItem()">Save Item</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+
+
+
+
+
+
+        <p>&copy; 2024 Indra Motor Spares (Pvt) Ltd. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let editingRow = null;
+
+        // Function to add or update an item
+        function addOrUpdateItem() {
+            const itemCode = document.getElementById('itemCode').value;
+            const partNumber = document.getElementById('partNumber').value;
+            const itemName = document.getElementById('itemName').value;
+            const price = document.getElementById('price').value;
+
+            if (itemCode && partNumber && itemName && price) {
+                if (editingRow) {
+                    // Update existing row
+                    editingRow.cells[0].textContent = itemCode;
+                    editingRow.cells[1].textContent = partNumber;
+                    editingRow.cells[2].textContent = itemName;
+                    editingRow.cells[3].textContent = price;
+
+                    // Reset the editing row after update
+                    editingRow = null;
+                } else {
+                    // Add new row
+                    const table = document.getElementById('itemsTable').querySelector('tbody');
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${itemCode}</td>
+                        <td>${partNumber}</td>
+                        <td>${itemName}</td>
+                        <td>${parseFloat(price).toFixed(2)}</td>
+                        <td><button class="edit-btn" onclick="editItem(this)">Edit</button></td>
+                    `;
+                    table.appendChild(newRow);
+                }
+
+                // Clear form fields after saving
+                document.getElementById('itemForm').reset();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+
+        // Function to edit item details
+        function editItem(button) {
+            const row = button.parentElement.parentElement;
+            const itemCode = row.cells[0].textContent;
+            const partNumber = row.cells[1].textContent;
+            const itemName = row.cells[2].textContent;
+            const price = row.cells[3].textContent;
+
+            // Populate form with current row data
+            document.getElementById('itemCode').value = itemCode;
+            document.getElementById('partNumber').value = partNumber;
+            document.getElementById('itemName').value = itemName;
+            document.getElementById('price').value = price;
+
+            // Set the row as the item being edited
+            editingRow = row;
+        }
+    </script>
+</body>
+</html>
